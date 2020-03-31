@@ -34,7 +34,7 @@ def search_daily(link, keywords):
     with open("today.xlsx", 'wb') as f:
         f.write(r.content)
     path = Path(Path.cwd() / 'today.xlsx')
-    df= pd.read_excel(path)
+    df = pd.read_excel(path)
     for index, row in df.iterrows():
        title_words = row['Title'].split()
        print(title_words)
