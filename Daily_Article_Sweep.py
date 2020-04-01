@@ -38,9 +38,9 @@ class Daily_Article_Sweep:
         yesterday = date.today() - datetime.timedelta(days=1)
         d2 = yesterday.strftime("%B %d %Y").split()
         self.DATE_YESTERDAY = d2[1] + d2[0] + d2[2]
-        self.EXCEL_PAPERS = 'https://www.cdc.gov/library/docs/covid19/ONLY_newarticles_' + self.DATE + '_Excel.xlsx'
-        self.EXCEL_PAPERS_YESTERDAY = 'https://www.cdc.gov/library/docs/covid19/ONLY_newarticles_' + \
-            self.DATE_YESTERDAY + '_Excel.xlsx'
+        self.CDC_PAPERS = 'https://www.cdc.gov/library/docs/covid19/ONLY_newarticles_' + self.DATE + '_Excel.xlsx'
+        self.CDC_PAPERS_YESTERDAY = 'https://www.cdc.gov/library/docs/covid19/ONLY_newarticles_' + \
+            self.DATE_YESTERDAY + '_CDC.xlsx'
         self.JSON_PAPERS = 'https://connect.medrxiv.org/relate/collection_json.php?grp=181'
         self.KEYPHRASES = ['Transmission', 'rate', 'population', 'Latency', 'period',
                            'Reporting', 'rate', 'Infectious', 'reported', 'unreported', 'hospital',
@@ -48,16 +48,16 @@ class Daily_Article_Sweep:
                            'from','patients', 'admission', 'die', 'death']
         self.todays_matches = []
 
-        def get_excel(self):
+        def get_cdc(self):
             matches = []
-            r = requests.get(self.EXCEL_PAPERS)
+            r = requests.get(self.CDC_PAPERS)
             with open("today.xlsx", 'wb') as f:
                 f.write(r.content)
             path = Path(Path.cwd() / 'today.xlsx')
             try:
                 df = pd.read_excel(path)
             except:
-                r = requests.get(self.EXCEL_PAPERS_YESTERDAY)
+                r = requests.get(self.CDC_PAPERS_YESTERDAY)
                 with open("today.xlsx", 'wb') as f:
                     f.write(r.content)
                 path = Path(Path.cwd() / 'today.xlsx')
@@ -77,7 +77,7 @@ class Daily_Article_Sweep:
                         curr_match["link"] = row['URL']
                     self.todays_matches.append(curr_match)
 
-        def get_json(self):
+        def get_rxiv(self):
             data = requests.get(self.JSON_PAPERS).json()
             matches = []
             for paper_data in data["rels"]:
@@ -88,10 +88,7 @@ class Daily_Article_Sweep:
                     curr_match["link"] = paper_data["rel_link"]
                     self.todays_matches.append(curr_match)
 
-        get_excel(self)
-        get_json(self)
+        get_cdc(self)
+        get_rxiv(self)
         self.todays_data_df = pd.DataFrame(self.todays_matches)
         self.todays_data_df.to_csv('daily_to_search.csv')
-
-
-
