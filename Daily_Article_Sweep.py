@@ -34,10 +34,14 @@ class Daily_Article_Sweep:
     def __init__(self):
         today = date.today()
         d2 = today.strftime("%B %d %Y").split()
-        self.DATE = d2[1] + d2[0] + d2[2]
+        if d2[1][0] == '0':
+            day = d2[1][1:]
+        self.DATE = day + d2[0] + d2[2]
         yesterday = date.today() - datetime.timedelta(days=1)
         d2 = yesterday.strftime("%B %d %Y").split()
-        self.DATE_YESTERDAY = d2[1] + d2[0] + d2[2]
+        if d2[1][0] == '0':
+            day = d2[1][1:]
+        self.DATE_YESTERDAY = day + d2[0] + d2[2]
         self.CDC_PAPERS = 'https://www.cdc.gov/library/docs/covid19/ONLY_newarticles_' + self.DATE + '_Excel.xlsx'
         self.CDC_PAPERS_YESTERDAY = 'https://www.cdc.gov/library/docs/covid19/ONLY_newarticles_' + \
             self.DATE_YESTERDAY + '_CDC.xlsx'
@@ -50,11 +54,11 @@ class Daily_Article_Sweep:
 
         def get_cdc(self):
             matches = []
-            r = requests.get(self.CDC_PAPERS)
-            with open("today.xlsx", 'wb') as f:
-                f.write(r.content)
-            path = Path(Path.cwd() / 'today.xlsx')
             try:
+                r = requests.get(self.CDC_PAPERS)
+                with open("today.xlsx", 'wb') as f:
+                    f.write(r.content)
+                path = Path(Path.cwd() / 'today.xlsx')
                 df = pd.read_excel(path)
             except:
                 r = requests.get(self.CDC_PAPERS_YESTERDAY)
