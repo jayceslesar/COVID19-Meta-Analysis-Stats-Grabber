@@ -91,7 +91,7 @@ class Daily_Article_Sweep:
         get_excel(self)
         get_json(self)
         self.todays_data_df = pd.DataFrame(self.todays_matches)
-        self.todays_data_df.to_csv('search_these_links.csv')
+        self.todays_data_df.to_csv('daily_to_search.csv')
 
 
 
