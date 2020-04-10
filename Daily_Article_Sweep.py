@@ -11,6 +11,11 @@ import datetime
 import lxml.html
 
 
+def parse_articles(article, words):
+    stats = {}
+    return stats
+
+
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
