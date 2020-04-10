@@ -14,9 +14,11 @@ def parse_articles(article, words):
     stats = {}
     return stats
 
+
 # used to tell how similar to strings are
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
+
 
 # searches the title words and keywords list provided to ween out titles
 # if it hits a good keyword it auto passes
@@ -42,6 +44,7 @@ def find_relevant_titles(title, keywords, bad_keywords, good_keywords):
     else:
         return False
 
+
 # class to organize data and run everything
 class Daily_Article_Sweep:
     # initializer
@@ -51,6 +54,8 @@ class Daily_Article_Sweep:
         d2 = today.strftime("%B %d %Y").split()
         if d2[1][0] == '0':
             day = d2[1][1:]
+        else:
+            day = d2[1]
         self.DATE = day + d2[0] + d2[2]
         yesterday = date.today() - datetime.timedelta(days=1)
         d2 = yesterday.strftime("%B %d %Y").split()
@@ -73,7 +78,6 @@ class Daily_Article_Sweep:
 
         # parses the CDC database for relevant titles
         def get_cdc(self):
-            matches = []
             # get the text data
             page = requests.get(self.CDC_LINK).text
             # lxml great to use for organzing html
@@ -114,7 +118,6 @@ class Daily_Article_Sweep:
         def get_rxiv(self):
             # pings and gets the json object of daily info
             data = requests.get(self.JSON_PAPERS).json()
-            matches = []
             # search each title
             for paper_data in data["rels"]:
                 curr_title = paper_data["rel_title"]
