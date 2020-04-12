@@ -2,4 +2,3 @@
 .vscode
 *.pyc
 __pychache__
-*.csv
