@@ -33,5 +33,10 @@ def get_data():
     df.to_csv(str(path) + '/all_us.csv')
 
 
-get_data()
+def main():
+    get_data()
+
+
+if __name__ == "__main__":
+    main()
 
