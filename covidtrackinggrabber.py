@@ -55,10 +55,8 @@ def get_data():
                 else:
                     day_dict['Deaths'] = 0
                 if 'hospitalizedCumulative' in day.keys():
-                    print(day['hospitalized'])
                     day_dict['Hospitalized (cumulative)'] = day['hospitalizedCumulative']
                 elif 'hostpitalized' in day.keys():
-                    print(day['hospitalized'])
                     day_dict['Hospitalized (cumulative)'] = day['hospitalized']
                 else:
                     day_dict['Hospitalized (cumulative)'] = 0
